@@ -119,10 +119,10 @@ TextureImporter:
       name: FlyShad_Guard_0
       rect:
         serializedVersion: 2
-        x: 4
-        y: 17
-        width: 57
-        height: 34
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -140,10 +140,10 @@ TextureImporter:
       name: FlyShad_Guard_1
       rect:
         serializedVersion: 2
-        x: 74
-        y: 19
-        width: 47
-        height: 31
+        x: 64
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,10 +161,10 @@ TextureImporter:
       name: FlyShad_Guard_2
       rect:
         serializedVersion: 2
-        x: 138
-        y: 18
-        width: 45
-        height: 26
+        x: 128
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -182,10 +182,10 @@ TextureImporter:
       name: FlyShad_Guard_3
       rect:
         serializedVersion: 2
-        x: 197
-        y: 19
-        width: 55
-        height: 29
+        x: 192
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

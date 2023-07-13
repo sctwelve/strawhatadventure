@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
-{
-    public Animator animator;
+    {
+    Rigidbody2D myRigidbody;
+    [SerializeField] float moveSpeed = 1f;
+    [SerializeField]  int maxHealth = 100;
 
-    public int maxHealth = 100;
+    public Animator animator;
     int currentHealth;
 
 
@@ -14,7 +16,15 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
+        myRigidbody = GetComponent<Rigidbody2D>();
         
+    }
+    /// <summary>
+    /// Update is called every frame, if the MonoBehaviour is enabled.
+    /// </summary>
+    private void Update()
+    {
+        myRigidbody.velocity = new Vector2 (moveSpeed, 0f);
     }
 
     public void TakeDamage(int damage)
