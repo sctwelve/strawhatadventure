@@ -939,7 +939,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2098214687
 Animator:
-  serializedVersion: 5
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -956,8 +956,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!70 &2098214689
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1000,6 +999,9 @@ MonoBehaviour:
   BashPower: 20
   BashTime: 0.2
   Arrow: {fileID: 1312749604}
+  dashingPower: 24
+  dashingTime: 0.2
+  dashingCooldown: 1
 --- !u!114 &2098214691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1020,3 +1022,5 @@ MonoBehaviour:
   attackRange: 0.74
   attackRate: 2
   attackDamage: 40
+  specialAttackCooldown: 5
+  specialAttackDamage: 100

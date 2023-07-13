@@ -10,18 +10,17 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheckCollider;
     public Transform overheadCheckCollider;
     public LayerMask groundLayer;
-
     const float groundCheckRadius = 0.2f;
     const float overheadCheckRadius = 0.2f;
-    const float wallCheckRadius = 0.2f;
+
+    [Header("Move & Jump")]
     [SerializeField] float speed = 2;
     [SerializeField] float jumpPower =500;
-    public int totalJumps;
     int availableJumps;
     float horizontalValue;
     float runSpeedModifier = 2f;
     float crouchSpeedModifier = 0.5f;
-    
+    public int totalJumps;
     bool isGrounded=true;    
     bool isRunning;
     bool facingRight = true;
@@ -29,18 +28,27 @@ public class PlayerMovement : MonoBehaviour
     bool multipleJump;
     bool coyoteJump;
 
+
     [Header("Bash")]
     [SerializeField] private float Radius;
+    [SerializeField] private float BashPower;
+    [SerializeField] private float BashTime;
+    [SerializeField] private GameObject Arrow;
     private GameObject BashAbleObj;
     private bool NearToBashAbleObj;
     private bool IsChosingDir;
     private bool IsBashing;
-    [SerializeField] private float BashPower;
-    [SerializeField] private float BashTime;
-    [SerializeField] private GameObject Arrow;
-    Vector3 BashDir;
     private float BashTimeReset;
     private Vector3 originalScale;
+    Vector3 BashDir;
+
+    [Header ("Dash")]
+    [SerializeField] private float dashingPower = 24f;
+    [SerializeField] private float dashingTime = 0.2f;
+    [SerializeField] private float dashingCooldown = 1f;
+    private bool canDash = true;
+    private bool isDashing;
+
 
     void Awake()
     {
@@ -56,7 +64,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
+        if (isDashing)
+        {
+            return;
+        }
+
         //Store the horizontal value
         horizontalValue = Input.GetAxisRaw("Horizontal");
 
@@ -81,6 +93,12 @@ public class PlayerMovement : MonoBehaviour
         //Set the yVelocity Value
         animator.SetFloat("yVelocity", rb.velocity.y);
 
+        //For dashing
+        if (Input.GetKeyDown(KeyCode.E) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+
         Bash();
 
 
@@ -88,7 +106,12 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(IsBashing == false)
+        if (isDashing)
+        {
+            return;
+        }
+
+        if (IsBashing == false)
 
         rb.velocity = new Vector2(horizontalValue * Time.deltaTime, rb.velocity.y);
         GroundCheck();
@@ -104,8 +127,6 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, Radius);
     }
-
-    
 
     void GroundCheck()
     {
@@ -147,8 +168,6 @@ public class PlayerMovement : MonoBehaviour
         //in the animator is disabled
         animator.SetBool("Jump", !isGrounded);
     }
-
-    
 
     #region Jump
     IEnumerator CoyoteJumpDelay()
@@ -305,5 +324,32 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+
+        // Menjalankan animasi dash
+        animator.SetTrigger ("Dash");
+
+        // Menonaktifkan gravitasi sementara
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0f;
+
+        // Mengatur kecepatan dash berdasarkan arah player
+        Vector2 dashVelocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+        rb.velocity = dashVelocity;
+
+        yield return new WaitForSeconds(dashingTime);
+
+        // Mengaktifkan kembali gravitasi
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+
+        yield return new WaitForSeconds(dashingCooldown);
+        canDash = true;
+    }
+
 
 }
