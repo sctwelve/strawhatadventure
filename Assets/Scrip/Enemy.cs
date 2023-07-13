@@ -8,8 +8,10 @@ public class Enemy : MonoBehaviour
     [SerializeField] float moveSpeed = 1f;
     [SerializeField]  int maxHealth = 100;
 
-    public Animator animator;
     int currentHealth;
+    [SerializeField] GameObject PointA1;
+    [SerializeField] GameObject PointA2;
+    private Transform currentPoint;
 
 
     // Start is called before the first frame update
@@ -17,6 +19,7 @@ public class Enemy : MonoBehaviour
     {
         currentHealth = maxHealth;
         myRigidbody = GetComponent<Rigidbody2D>();
+        currentPoint = PointA2.transform;
         
     }
     /// <summary>
@@ -24,14 +27,43 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        myRigidbody.velocity = new Vector2 (moveSpeed, 0f);
+
+        //control enemy pattern
+        Vector2 point = currentPoint.position - transform.position;
+        if (currentPoint == PointA2.transform){
+            myRigidbody.velocity = new Vector2(moveSpeed,0);
+        }else{
+            myRigidbody.velocity = new Vector2(-moveSpeed, 0);
+        }
+
+        if (Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == PointA2.transform){
+            currentPoint = PointA1.transform;
+            flipSprites();
+        }if(Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == PointA1.transform){
+            currentPoint = PointA2.transform;
+            flipSprites();
+        }
+
+
+    }
+
+    //flip enemy sprites every function called
+    private void flipSprites(){
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1;
+        transform.localScale = localScale;
+    }
+
+    //show enemy pattern radius
+    private void OnDrawGizmos(){
+        Gizmos.DrawWireSphere(PointA1.transform.position,0.5f);
+        Gizmos.DrawWireSphere(PointA2.transform.position,0.5f);
+        Gizmos.DrawLine(PointA1.transform.position, PointA2.transform.position);
     }
 
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-
-        animator.SetTrigger("Hurt");
 
         if (currentHealth <= 0)
         {
@@ -42,8 +74,6 @@ public class Enemy : MonoBehaviour
     void Die()
     {
         Debug.Log("Enemy Died!");
-
-        animator.SetBool("IsDead", true);
 
         GetComponent<Collider2D>().enabled = false;
         this.enabled = false;
