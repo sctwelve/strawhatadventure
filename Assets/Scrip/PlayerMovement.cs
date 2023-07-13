@@ -10,15 +10,12 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheckCollider;
     public Transform overheadCheckCollider;
     public LayerMask groundLayer;
-    public Transform wallCheckCollider;
-    public LayerMask wallLayer;
 
     const float groundCheckRadius = 0.2f;
     const float overheadCheckRadius = 0.2f;
     const float wallCheckRadius = 0.2f;
     [SerializeField] float speed = 2;
     [SerializeField] float jumpPower =500;
-    [SerializeField] float slideFactor = 0.2f;
     public int totalJumps;
     int availableJumps;
     float horizontalValue;
@@ -31,15 +28,30 @@ public class PlayerMovement : MonoBehaviour
     bool crouchPressed;
     bool multipleJump;
     bool coyoteJump;
-    bool isSliding;
-    bool isDead = false;
+
+    [Header("Bash")]
+    [SerializeField] private float Radius;
+    private GameObject BashAbleObj;
+    private bool NearToBashAbleObj;
+    private bool IsChosingDir;
+    private bool IsBashing;
+    [SerializeField] private float BashPower;
+    [SerializeField] private float BashTime;
+    [SerializeField] private GameObject Arrow;
+    Vector3 BashDir;
+    private float BashTimeReset;
+    private Vector3 originalScale;
 
     void Awake()
     {
         availableJumps = totalJumps;
 
+        BashTimeReset = BashTime;
+
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        originalScale = transform.localScale;
     }
 
     void Update()
@@ -69,11 +81,16 @@ public class PlayerMovement : MonoBehaviour
         //Set the yVelocity Value
         animator.SetFloat("yVelocity", rb.velocity.y);
 
-        
+        Bash();
+
+
     }
 
     void FixedUpdate()
     {
+        if(IsBashing == false)
+
+        rb.velocity = new Vector2(horizontalValue * Time.deltaTime, rb.velocity.y);
         GroundCheck();
         Move(horizontalValue, crouchPressed);        
     }
@@ -84,6 +101,8 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawSphere(groundCheckCollider.position, groundCheckRadius);
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(overheadCheckCollider.position, overheadCheckRadius);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, Radius);
     }
 
     
@@ -207,13 +226,13 @@ public class PlayerMovement : MonoBehaviour
         //If looking right and clicked left (flip to the left)
         if(facingRight && dir < 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
             facingRight = false;
         }
         //If looking left and clicked right (flip to rhe right)
         else if(!facingRight && dir > 0)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = originalScale;
             facingRight = true;
         }
 
@@ -222,7 +241,69 @@ public class PlayerMovement : MonoBehaviour
         //of the RigidBody2D velocity 
         animator.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
         #endregion
-    }   
-    
-    
+    }
+
+    void Bash()
+    {
+        RaycastHit2D[] Rays = Physics2D.CircleCastAll(transform.position, Radius, Vector3.forward);
+        foreach (RaycastHit2D ray in Rays)
+        {
+            NearToBashAbleObj = false;
+
+            if (ray.collider.tag == "BashAble")
+            {
+                NearToBashAbleObj = true;
+                BashAbleObj = ray.collider.transform.gameObject;
+                break;
+            }
+        }
+
+        if (NearToBashAbleObj)
+        {
+            BashAbleObj.GetComponent<SpriteRenderer>().color = Color.yellow;
+            if (Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                Time.timeScale = 0;
+                BashAbleObj.transform.localScale = new Vector2(1.4f, 1.4f);
+                Arrow.SetActive(true);
+                Arrow.transform.position = BashAbleObj.transform.transform.position;
+                IsChosingDir = true;
+            }
+            else if (IsChosingDir && Input.GetKeyUp(KeyCode.Mouse1))
+            {
+                Time.timeScale = 1f;
+                BashAbleObj.transform.localScale = new Vector2(1, 1);
+                IsChosingDir = false;
+                IsBashing = true;
+                rb.velocity = Vector2.zero;
+                transform.position = BashAbleObj.transform.position;
+                BashDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+                BashDir.z = 0;
+
+                // Mengatur kecepatan dash berdasarkan arah BashDir
+                BashDir = BashDir.normalized;
+                rb.velocity = new Vector2(BashDir.x * BashPower, BashDir.y * BashPower);
+                Arrow.SetActive(false);
+            }
+        }
+        else if (BashAbleObj != null)
+        {
+            BashAbleObj.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+
+        if (IsBashing)
+        {
+            if (BashTime > 0)
+            {
+                BashTime -= Time.deltaTime;
+            }
+            else
+            {
+                IsBashing = false;
+                BashTime = BashTimeReset;
+                rb.velocity = Vector2.zero;
+            }
+        }
+    }
+
 }
