@@ -6,41 +6,41 @@ public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
     Animator animator;
-    public Collider2D standingCollider, crouchingCollider;
+    public Collider2D standingCollider,crouchingCollider;
     public Transform groundCheckCollider;
     public Transform overheadCheckCollider;
     public LayerMask groundLayer;
-
     const float groundCheckRadius = 0.2f;
     const float overheadCheckRadius = 0.2f;
 
     [Header("Move & Jump")]
-    [SerializeField] float speed = 2f;
-    [SerializeField] float jumpPower = 500f;
+    [SerializeField] float speed = 2;
+    [SerializeField] float jumpPower =500;
     int availableJumps;
     float horizontalValue;
     float runSpeedModifier = 2f;
     float crouchSpeedModifier = 0.5f;
     public int totalJumps;
-    bool isGrounded = true;
+    bool isGrounded=true;    
     bool isRunning;
     bool facingRight = true;
     bool crouchPressed;
     bool multipleJump;
     bool coyoteJump;
 
+
     [Header("Bash")]
-    [SerializeField] private float radius;
-    [SerializeField] GameObject BashAbleObj;
-    private bool NearToBashAbleObj;
-    private bool IsChosingDir;
-    private bool IsBashing;
+    [SerializeField] private float Radius;
     [SerializeField] private float BashPower;
     [SerializeField] private float BashTime;
     [SerializeField] private GameObject Arrow;
-    Vector3 BashDir;
+    private GameObject BashAbleObj;
+    private bool NearToBashAbleObj;
+    private bool IsChosingDir;
+    private bool IsBashing;
     private float BashTimeReset;
     private Vector3 originalScale;
+    Vector3 BashDir;
 
     [Header ("Dash")]
     [SerializeField] private float dashingPower = 24f;
@@ -48,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashingCooldown = 1f;
     private bool canDash = true;
     private bool isDashing;
+
 
     void Awake()
     {
@@ -68,30 +69,39 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        //Store the horizontal value
         horizontalValue = Input.GetAxisRaw("Horizontal");
 
-        isRunning = Input.GetKeyDown(KeyCode.LeftShift);
-        
-        if (Input.GetButtonDown("Jump"))
-        {
-            Jump();
-        }
-        
-        crouchPressed = Input.GetButtonDown("Crouch");
-        
-        if (Input.GetButtonUp("Crouch"))
-        {
-            crouchPressed = false;
-        }
+        //If LShift is clicked enable isRunning
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            isRunning = true;
+        //If LShift is released disable isRunning
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+            isRunning = false;
 
+        //If we press Jump button enable jump 
+        if (Input.GetButtonDown("Jump"))
+            Jump();
+
+        //If we press Crouch button enable crouch 
+        if (Input.GetButtonDown("Crouch"))
+            crouchPressed = true;
+        //Otherwise disable it
+        else if (Input.GetButtonUp("Crouch"))
+            crouchPressed = false;
+
+        //Set the yVelocity Value
         animator.SetFloat("yVelocity", rb.velocity.y);
 
+        //For dashing
         if (Input.GetKeyDown(KeyCode.E) && canDash)
         {
             StartCoroutine(Dash());
         }
 
         Bash();
+
+
     }
 
     void FixedUpdate()
@@ -101,12 +111,11 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (!IsBashing)
-        {
-            rb.velocity = new Vector2(horizontalValue * Time.deltaTime, rb.velocity.y);
-            GroundCheck();
-            Move(horizontalValue, crouchPressed);
-        }
+        if (IsBashing == false)
+
+        rb.velocity = new Vector2(horizontalValue * Time.deltaTime, rb.velocity.y);
+        GroundCheck();
+        Move(horizontalValue, crouchPressed);        
     }
 
     private void OnDrawGizmosSelected()
@@ -116,44 +125,47 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawSphere(overheadCheckCollider.position, overheadCheckRadius);
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, Radius);
     }
 
     void GroundCheck()
     {
         bool wasGrounded = isGrounded;
         isGrounded = false;
-        
+        //Check if the GroundCheckObject is colliding with other
+        //2D Colliders that are in the "Ground" Layer
+        //If yes (isGrounded true) else (isGrounded false)
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheckCollider.position, groundCheckRadius, groundLayer);
-        
         if (colliders.Length > 0)
         {
             isGrounded = true;
-            
             if (!wasGrounded)
             {
                 availableJumps = totalJumps;
                 multipleJump = false;
+
+                //AudioManager.instance.PlaySFX("landing");
             }        
             
+            //Check if any of the colliders is moving platform
+            //Parent it to this transform
             foreach(var c in colliders)
             {
                 if (c.tag == "MovingPlatform")
-                {
                     transform.parent = c.transform;
-                }
             }
         }    
         else
         {
+            //Un-parent the transform
             transform.parent = null;
-            
+
             if (wasGrounded)
-            {
                 StartCoroutine(CoyoteJumpDelay());
-            }
         }
-        
+
+        //As long as we are grounded the "Jump" bool
+        //in the animator is disabled
         animator.SetBool("Jump", !isGrounded);
     }
 
@@ -186,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
                 animator.SetBool("Jump", true);
             }
 
-            if(multipleJump && availableJumps > 0)
+            if(multipleJump && availableJumps>0)
             {
                 availableJumps--;
 
@@ -201,12 +213,13 @@ public class PlayerMovement : MonoBehaviour
     {
         #region Crouch
 
+        //If we are crouching and disabled crouching
+        //Check overhead for collision with Ground items
+        //If there are any, remain crouched, otherwise un-crouch
         if(!crouchFlag)
         {
-            if(Physics2D.OverlapCircle(overheadCheckCollider.position, overheadCheckRadius, groundLayer))
-            {
+            if(Physics2D.OverlapCircle(overheadCheckCollider.position,overheadCheckRadius,groundLayer))
                 crouchFlag = true;
-            }
         }
 
         animator.SetBool("Crouch", crouchFlag);
@@ -216,58 +229,58 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         #region Move & Run
-
+        //Set value of x using dir and speed
         float xVal = dir * speed * 100 * Time.fixedDeltaTime;
-        
+        //If we are running mulitply with the running modifier (higher)
         if (isRunning)
-        {
             xVal *= runSpeedModifier;
-        }
-        
+        //If we are running mulitply with the running modifier (higher)
         if (crouchFlag)
-        {
             xVal *= crouchSpeedModifier;
-        }
-        
+        //Create Vec2 for the velocity
         Vector2 targetVelocity = new Vector2(xVal, rb.velocity.y);
-        
+        //Set the player's velocity
         rb.velocity = targetVelocity;
  
+        //If looking right and clicked left (flip to the left)
         if(facingRight && dir < 0)
         {
             transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
             facingRight = false;
         }
+        //If looking left and clicked right (flip to rhe right)
         else if(!facingRight && dir > 0)
         {
             transform.localScale = originalScale;
             facingRight = true;
         }
 
+        //(0 idle , 4 walking , 8 running)
+        //Set the float xVelocity according to the x value 
+        //of the RigidBody2D velocity 
         animator.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
-
         #endregion
     }
 
     void Bash()
     {
-        RaycastHit2D[] Rays = Physics2D.CircleCastAll(transform.position, radius,Vector3.forward);
-        foreach(RaycastHit2D ray in Rays)
+        RaycastHit2D[] Rays = Physics2D.CircleCastAll(transform.position, Radius, Vector3.forward);
+        foreach (RaycastHit2D ray in Rays)
         {
-
             NearToBashAbleObj = false;
 
-            if(ray.collider.tag =="BashAble")
+            if (ray.collider.tag == "BashAble")
             {
                 NearToBashAbleObj = true;
                 BashAbleObj = ray.collider.transform.gameObject;
                 break;
             }
         }
-        if(NearToBashAbleObj)
+
+        if (NearToBashAbleObj)
         {
             BashAbleObj.GetComponent<SpriteRenderer>().color = Color.yellow;
-            if(Input.GetKeyDown(KeyCode.Mouse1))
+            if (Input.GetKeyDown(KeyCode.Mouse1))
             {
                 Time.timeScale = 0;
                 BashAbleObj.transform.localScale = new Vector2(1.4f, 1.4f);
@@ -275,7 +288,7 @@ public class PlayerMovement : MonoBehaviour
                 Arrow.transform.position = BashAbleObj.transform.transform.position;
                 IsChosingDir = true;
             }
-            else if(IsChosingDir && Input.GetKeyUp(KeyCode.Mouse1))
+            else if (IsChosingDir && Input.GetKeyUp(KeyCode.Mouse1))
             {
                 Time.timeScale = 1f;
                 BashAbleObj.transform.localScale = new Vector2(1, 1);
@@ -285,11 +298,11 @@ public class PlayerMovement : MonoBehaviour
                 transform.position = BashAbleObj.transform.position;
                 BashDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
                 BashDir.z = 0;
-                
-                BashDir = BashDir.normalized;
-                BashAbleObj.GetComponent<Rigidbody2D>().AddForce(-BashDir * 100, ForceMode2D.Impulse);
-                Arrow.SetActive(false);
 
+                // Mengatur kecepatan dash berdasarkan arah BashDir
+                BashDir = BashDir.normalized;
+                rb.velocity = new Vector2(BashDir.x * BashPower, BashDir.y * BashPower);
+                Arrow.SetActive(false);
             }
         }
         else if (BashAbleObj != null)
@@ -297,29 +310,19 @@ public class PlayerMovement : MonoBehaviour
             BashAbleObj.GetComponent<SpriteRenderer>().color = Color.white;
         }
 
-        ////// Preform the bash
-        ///
-        if(IsBashing)
+        if (IsBashing)
         {
-            if(BashTime > 0 )
+            if (BashTime > 0)
             {
                 BashTime -= Time.deltaTime;
-                rb.velocity = BashDir * BashPower * 1000 * Time.deltaTime;
             }
             else
             {
                 IsBashing = false;
                 BashTime = BashTimeReset;
-                rb.velocity = new Vector2(rb.velocity.x, 0);
-
-
+                rb.velocity = Vector2.zero;
             }
         }
-    }
-
-      void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(transform.position, radius);
     }
 
     private IEnumerator Dash()
@@ -327,20 +330,26 @@ public class PlayerMovement : MonoBehaviour
         canDash = false;
         isDashing = true;
 
+        // Menjalankan animasi dash
         animator.SetTrigger ("Dash");
 
+        // Menonaktifkan gravitasi sementara
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
 
+        // Mengatur kecepatan dash berdasarkan arah player
         Vector2 dashVelocity = new Vector2(transform.localScale.x * dashingPower, 0f);
         rb.velocity = dashVelocity;
 
         yield return new WaitForSeconds(dashingTime);
 
+        // Mengaktifkan kembali gravitasi
         rb.gravityScale = originalGravity;
         isDashing = false;
 
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
+
+
 }

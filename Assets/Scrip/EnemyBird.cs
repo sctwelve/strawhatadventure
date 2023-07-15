@@ -51,7 +51,7 @@ public class EnemyBird : MonoBehaviour
 
             // Call a method on the attack script to inform it about the movement status
             enemy.SetCanMove(canMove);
-            Debug.Log(canMove);
+            
             // Attack logic
             cooldownTimer = 0;
             anim.SetTrigger("rangedAttack");
