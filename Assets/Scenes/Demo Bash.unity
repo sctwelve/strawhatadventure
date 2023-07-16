@@ -1401,11 +1401,11 @@ MonoBehaviour:
   totalJumps: 2
   radius: 2
   BashAbleObj: {fileID: 0}
-  BashPower: 1
-  BashTime: 1
+  BashPower: 1.7
+  BashTime: 1.2
   Arrow: {fileID: 560421409}
   dashingPower: 24
-  dashingTime: 0.2
+  dashingTime: 0.1
   dashingCooldown: 1
 --- !u!114 &3546422736562351287
 MonoBehaviour:
