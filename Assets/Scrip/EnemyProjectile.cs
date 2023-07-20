@@ -33,7 +33,7 @@ public class EnemyProjectile : MonoBehaviour
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(20);
+                playerHealth.TakeDamage(5);
             }
 
             // Deactivate the projectile on collision with the player
