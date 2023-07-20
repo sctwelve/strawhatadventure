@@ -1055,9 +1055,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2edfc88292382c14689e9f7807adf07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 6
+  attackCooldown: 3
   range: 5
-  damage: 2
   firepoint: {fileID: 672996352}
   shadowMagic:
   - {fileID: 3298785598272601349}
