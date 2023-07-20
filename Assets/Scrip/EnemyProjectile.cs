@@ -23,8 +23,16 @@ public class EnemyProjectile : MonoBehaviour
             gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collission)
     {
-        gameObject.SetActive(false); //When this hits any object deactivate arrow
+            if (collission.gameObject.layer == 3) 
+		{
+			Debug.Log ("Player");
+            gameObject.SetActive(false);
+		}else{
+            Debug.Log ("NON");
+                gameObject.SetActive(false);
+        }
+            
     }
 }
