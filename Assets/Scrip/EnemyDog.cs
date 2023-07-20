@@ -7,6 +7,7 @@ public class EnemyDog : MonoBehaviour
      [Header ("Attack Parameters")]
     [SerializeField] private float attackCooldown;
     [SerializeField] private float range;
+    [SerializeField] private float attackRange;
     [SerializeField] private int damage;
 
     
@@ -39,26 +40,53 @@ public class EnemyDog : MonoBehaviour
         cooldownTimer += Time.deltaTime;
 
         //attack only when player in sight
-        if (PlayerInSight()){
-             if (cooldownTimer >= attackCooldown)
+        if (PlayerInSight())
+        {
+            if (cooldownTimer >= attackCooldown)
             {
-            // Stop the movement when attacking
-            canMove = false;
+                // Stop the movement when attacking
+                canMove = false;
 
-            // Call a method on the attack script to inform it about the movement status
+                // Call a method on the attack script to inform it about the movement status
+                enemy.SetCanMove(canMove);
+
+                // Attack logic
+                cooldownTimer = 0;
+                anim.SetTrigger("meeleAttack"); // Mengubah "meeleAttack" menjadi "attackTrigger"
+            }
+        }
+        else
+        {
+            // Resume movement when the player is not in sight
+            canMove = true;
             enemy.SetCanMove(canMove);
-            Debug.Log(canMove);
-            // Attack logic
-            cooldownTimer = 0;
-            anim.SetTrigger("meeleAttack");
         }
     }
-    else
+
+    // Fungsi yang akan dipanggil dari animasi untuk memberikan damage ke pemain
+    public void DealDamageToPlayer()
     {
-        // Resume movement when the player is not in sight
-        canMove = true;
-        enemy.SetCanMove(canMove);
-    }
+        Debug.Log("serang");
+        // Temukan pemain dengan tag "Player"
+        Collider2D playerCollider = Physics2D.OverlapBox(
+            boxCollider2D.bounds.center,
+            new Vector2(boxCollider2D.bounds.size.x * attackRange, boxCollider2D.bounds.size.y),
+            0,
+            playerLayer
+        );
+
+        // Jika pemain ada dalam jangkauan sentuhan, berikan damage ke pemain
+        if (playerCollider != null)
+        {
+            // Peroleh komponen PlayerHealth dari pemain
+            PlayerHealth playerHealth = playerCollider.GetComponent<PlayerHealth>();
+
+            // Jika ditemukan script PlayerHealth, berikan damage kepada pemain
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damage);
+            }
+        }
     }
 
     ///Enemy Sight Range
@@ -76,5 +104,8 @@ public class EnemyDog : MonoBehaviour
         Gizmos.color =  Color.red;
         Gizmos.DrawWireCube(boxCollider2D.bounds.center + transform.right * range * transform.localScale.x * colliderDistance, 
         new Vector3(boxCollider2D.bounds.size.x * range, boxCollider2D.bounds.size.y, boxCollider2D.bounds.size.z));
+        
+
+
     }
 }

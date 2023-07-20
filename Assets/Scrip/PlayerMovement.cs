@@ -49,16 +49,9 @@ public class PlayerMovement : MonoBehaviour
     private bool canDash = true;
     private bool isDashing;
 
-     [Header ("Health Bar")]
-     public int maxHP = 100;
-     public int currentHP;
-
-     public HealthBar healthBar;
 
     void Start()
     {
-        currentHP = maxHP;
-        healthBar.SetMaxHP(maxHP);
 
         availableJumps = totalJumps;
 

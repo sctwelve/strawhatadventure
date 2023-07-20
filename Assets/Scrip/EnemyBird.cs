@@ -39,31 +39,37 @@ public class EnemyBird : MonoBehaviour
     }
 
     private void Update()
-    {
+    {        
         cooldownTimer += Time.deltaTime;
 
         //attack only when player in sight
-        if (PlayerInSight()){
-             if (cooldownTimer >= attackCooldown)
+        if (PlayerInSight())
+        {
+            if (cooldownTimer >= attackCooldown)
             {
-            // Stop the movement when attacking
-            canMove = false;
+                // Stop the movement when attacking
+                canMove = false;
 
-            // Call a method on the attack script to inform it about the movement status
+                // Call a method on the attack script to inform it about the movement status
+                enemy.SetCanMove(canMove);
+
+                // Attack logic
+                cooldownTimer = 0;
+                anim.SetTrigger("rangedAttack");
+
+                // Call the RangedAttack method to launch the projectile
+                RangedAttack();
+            }
+        }
+        else
+        {
+            // Resume movement when the player is not in sight
+            canMove = true;
             enemy.SetCanMove(canMove);
-            
-            // Attack logic
-            cooldownTimer = 0;
-            anim.SetTrigger("rangedAttack");
         }
     }
-    else
-    {
-        // Resume movement when the player is not in sight
-        canMove = true;
-        enemy.SetCanMove(canMove);
-    }
-    }
+
+
     //Setup Enemy projectile
     private void RangedAttack(){
         cooldownTimer = 0;
@@ -71,6 +77,7 @@ public class EnemyBird : MonoBehaviour
         shadowMagic[FindFireball()].GetComponent<EnemyProjectile>().ActivateProjectile();
 
     }
+
     private int FindFireball()
     {
         for (int i = 0; i < shadowMagic.Length; i++)
@@ -81,7 +88,7 @@ public class EnemyBird : MonoBehaviour
         return 0;
     }
 
-
+    
     
     ///Enemy Sight Range
     private bool PlayerInSight(){

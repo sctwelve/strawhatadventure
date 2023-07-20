@@ -13,6 +13,7 @@ public class EnemyProjectile : MonoBehaviour
         lifetime = 0;
         gameObject.SetActive(true);
     }
+
     private void Update()
     {
         float movementSpeed = speed * Time.deltaTime;
@@ -23,16 +24,20 @@ public class EnemyProjectile : MonoBehaviour
             gameObject.SetActive(false);
     }
 
-    private void OnTriggerEnter2D(Collider2D collission)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-            if (collission.gameObject.layer == 3) 
-		{
-			Debug.Log ("Player");
+        // Check if the projectile collides with the player
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            // Apply damage to the player using the TakeDamage method if it exists in the player's script
+            PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(20);
+            }
+
+            // Deactivate the projectile on collision with the player
             gameObject.SetActive(false);
-		}else{
-            Debug.Log ("NON");
-                gameObject.SetActive(false);
         }
-            
     }
 }

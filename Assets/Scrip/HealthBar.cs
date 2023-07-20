@@ -5,15 +5,31 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
+    [SerializeField] private PlayerHealth playerHealth;
     public Slider slider;
 
-    public void SetMaxHP(int hp){
-        slider.maxValue = hp;
-        slider.value = hp;
+    private void Start()
+    {
+        if (playerHealth == null)
+        {
+            Debug.LogWarning("HealthBar: PlayerHealth reference not set!");
+        }
     }
 
-    public void SetHP(int hp){
-        slider.value = hp;
+    private void Update()
+    {
+        if (playerHealth != null && slider != null)
+        {
+            slider.value = playerHealth.currentHP;
+        }
     }
 
+    public void SetHealth(int currentHP, int maxHP)
+    {
+        if (slider != null)
+        {
+            slider.value = currentHP;
+            slider.maxValue = maxHP;
+        }
+    }
 }
