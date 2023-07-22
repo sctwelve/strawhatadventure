@@ -45,3 +45,12 @@ TagManager:
   - name: Damage Object
     uniqueID: 3239288593
     locked: 0
+  - name: Background
+    uniqueID: 2352953009
+    locked: 0
+  - name: Ground
+    uniqueID: 210975977
+    locked: 0
+  - name: Player
+    uniqueID: 2208151277
+    locked: 0
