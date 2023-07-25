@@ -14,7 +14,7 @@ TagManager:
   - UI
   - Ground
   - Enemy
-  - 
+  - Background
   - 
   - 
   - 
@@ -48,12 +48,15 @@ TagManager:
   - name: Damage Object
     uniqueID: 3239288593
     locked: 0
+  - name: Frontground
+    uniqueID: 2009235517
+    locked: 0
   - name: Ground
     uniqueID: 210975977
     locked: 0
   - name: Player
     uniqueID: 2208151277
     locked: 0
-  - name: Frontground
-    uniqueID: 2009235517
+  - name: Key Items
+    uniqueID: 933397595
     locked: 0
