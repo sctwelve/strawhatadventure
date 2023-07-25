@@ -10,7 +10,9 @@ public class SettingMenu : MonoBehaviour
 
     public void SetVolume(float volume)
     {
-        audioMixer.SetFloat("volume", volume);
+        // Mengkonversi nilai volume antara 0 hingga 1 menjadi nilai di rentang Audio Mixer
+        float exposedValue = Mathf.Lerp(-80f, 0f, volume);
+        audioMixer.SetFloat("volume", exposedValue);
 
         // Update parameter "VolumeLevel" pada Animator Controller
         volumeAnimator.SetFloat("VolumeLevel", volume);
@@ -18,13 +20,27 @@ public class SettingMenu : MonoBehaviour
 
     public void DecreaseVolume(float amount)
     {
-        audioMixer.GetFloat("volume", out float currentVolume);
-        audioMixer.SetFloat("volume", currentVolume - amount);
+        audioMixer.GetFloat("volume", out float currentExposedValue);
+
+        // Mengurangi nilai exposed parameter di Audio Mixer
+        float newExposedValue = Mathf.Clamp(currentExposedValue - amount, -80f, 0f);
+        audioMixer.SetFloat("volume", newExposedValue);
+
+        // Update parameter "VolumeLevel" pada Animator Controller
+        float normalizedValue = Mathf.InverseLerp(-80f, 0f, newExposedValue);
+        volumeAnimator.SetFloat("VolumeLevel", normalizedValue);
     }
 
     public void IncreaseVolume(float amount)
     {
-        audioMixer.GetFloat("volume", out float currentVolume);
-        audioMixer.SetFloat("volume", currentVolume + amount);
+        audioMixer.GetFloat("volume", out float currentExposedValue);
+
+        // Menambah nilai exposed parameter di Audio Mixer
+        float newExposedValue = Mathf.Clamp(currentExposedValue + amount, -80f, 0f);
+        audioMixer.SetFloat("volume", newExposedValue);
+
+        // Update parameter "VolumeLevel" pada Animator Controller
+        float normalizedValue = Mathf.InverseLerp(-80f, 0f, newExposedValue);
+        volumeAnimator.SetFloat("VolumeLevel", normalizedValue);
     }
 }

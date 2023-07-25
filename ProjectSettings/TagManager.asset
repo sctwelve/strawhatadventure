@@ -48,9 +48,6 @@ TagManager:
   - name: Damage Object
     uniqueID: 3239288593
     locked: 0
-  - name: Frontground
-    uniqueID: 2009235517
-    locked: 0
   - name: Ground
     uniqueID: 210975977
     locked: 0
@@ -59,4 +56,7 @@ TagManager:
     locked: 0
   - name: Key Items
     uniqueID: 933397595
+    locked: 0
+  - name: Frontground
+    uniqueID: 2009235517
     locked: 0
