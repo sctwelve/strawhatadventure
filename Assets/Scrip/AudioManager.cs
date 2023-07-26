@@ -34,6 +34,7 @@ public class AudioManager : MonoBehaviour
     void Start ()
     {
         Play("BacksoundMenu");
+        Play("BacksoundCredit");
     }
 
     public void Play(string name)
