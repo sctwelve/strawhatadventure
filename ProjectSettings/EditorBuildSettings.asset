@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/(trash3).unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Start Screen.unity
+    path: Assets/Scenes/Start Scene.unity
     guid: 721c0e932a0ebb6468c438f1698ee68e
   - enabled: 1
     path: Assets/Scenes/Main Game.unity
