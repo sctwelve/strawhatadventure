@@ -5,16 +5,10 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private PlayerHealth playerHealth;
     public Slider slider;
 
     private void Start()
     {
-        if (playerHealth == null)
-        {
-            Debug.LogWarning("HealthBar: PlayerHealth reference not set!");
-        }
-
         // Get the GameManager instance
         GameManager gameManager = FindObjectOfType<GameManager>();
 

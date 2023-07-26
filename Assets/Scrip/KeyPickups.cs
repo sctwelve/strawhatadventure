@@ -6,14 +6,13 @@ public class KeyPickups : MonoBehaviour
 {
 
     [SerializeField] AudioClip KeyPickupSFX;
-    /// <summary>
-    /// Sent when another object enters a trigger collider attached to this
-    /// object (2D physics only).
-    /// </summary>
-    /// <param name="other">The other Collider2D involved in this collision.</param>
+    [SerializeField] int keyPickedNumber = 1;
+
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player"){
+            FindObjectOfType<GameManager>().AddKeys(keyPickedNumber);
             AudioSource.PlayClipAtPoint(KeyPickupSFX, Camera.main.transform.position);
             Destroy(gameObject);
         }

@@ -8,9 +8,9 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private int currentHP;
     [SerializeField] public int maxHealth;
+    [SerializeField] public int currentKey;
     private static GameManager instance;
     
-    public Sound[] sounds;
     public AudioSource BGmusicForMainMenuSource; // AudioSource untuk Scene 0
     public AudioSource BGmusicForMainGameSource; // AudioSource untuk Scene 1
     public Dictionary<int, AudioSource> sceneMusicMap;
@@ -35,6 +35,13 @@ public class GameManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         PlayBGMusic(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void AddKeys(int keyPicked){
+      currentKey += keyPicked;
+    }
+    public int GetCurrentKey(){
+      return currentKey;
     }
 
     private void PlayBGMusic(int sceneIndex)
@@ -98,5 +105,9 @@ public class GameManager : MonoBehaviour
 
     public int GetMaxHealth(){
       return maxHealth;
+    }
+
+    public void GetKeys(){
+
     }
 }

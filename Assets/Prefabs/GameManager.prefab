@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHP: 50
   maxHealth: 100
-  sounds: []
+  currentKey: 0
   BGmusicForMainMenuSource: {fileID: 8820438708027390891}
   BGmusicForMainGameSource: {fileID: 8820438708027390891}
 --- !u!1 &8826468314413052737
