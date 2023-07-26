@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] public int maxHealth;
     private static GameManager instance;
     
+    public Sound[] sounds;
+    public AudioSource BGmusicForMainMenuSource; // AudioSource untuk Scene 0
+    public AudioSource BGmusicForMainGameSource; // AudioSource untuk Scene 1
+    public Dictionary<int, AudioSource> sceneMusicMap;
+
     void Awake()
     {
         if (instance != null)
@@ -17,10 +23,60 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Set this instance as the GameManager and mark it as not to be destroyed on scene change.
         instance = this;
         DontDestroyOnLoad(gameObject);
+
+        sceneMusicMap = new Dictionary<int, AudioSource>
+        {
+            { 0, BGmusicForMainMenuSource },
+            { 1, BGmusicForMainGameSource },
+          
+        };
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        PlayBGMusic(SceneManager.GetActiveScene().buildIndex);
     }
+
+    private void PlayBGMusic(int sceneIndex)
+    {
+        if (sceneMusicMap.ContainsKey(sceneIndex))
+        {
+            AudioSource audioSource = sceneMusicMap[sceneIndex];
+            if (audioSource != null && !audioSource.isPlaying)
+            {
+                audioSource.Play();
+            }
+        }
+    }
+    
+    private void StopBGMusic()
+    {
+        foreach (var audioSource in sceneMusicMap.Values)
+        {
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        int sceneIndex = scene.buildIndex;
+        StopBGMusic();
+        PlayBGMusic(sceneIndex);
+    }
+
 
     /// <summary>
     /// Update is called every frame, if the MonoBehaviour is enabled.
