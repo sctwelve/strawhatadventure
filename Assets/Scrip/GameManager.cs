@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     
     public AudioSource BGmusicForMainMenuSource; // AudioSource untuk Scene 0
     public AudioSource BGmusicForMainGameSource; // AudioSource untuk Scene 1
+    public AudioSource BGmusicForStageSandCaveSource; // AudioSource untuk Scene 2
+    public AudioSource BGmusicForCreditSceneSource; // AudioSource untuk Scene 3
     public Dictionary<int, AudioSource> sceneMusicMap;
 
     void Awake()
@@ -30,7 +32,9 @@ public class GameManager : MonoBehaviour
         {
             { 0, BGmusicForMainMenuSource },
             { 1, BGmusicForMainGameSource },
-          
+            { 2, BGmusicForMainGameSource },
+            { 3, BGmusicForMainGameSource },
+
         };
 
         SceneManager.sceneLoaded += OnSceneLoaded;
