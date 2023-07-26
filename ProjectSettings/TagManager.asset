@@ -42,6 +42,12 @@ TagManager:
   - name: Background
     uniqueID: 2352953009
     locked: 0
+  - name: Tree 2
+    uniqueID: 3501504037
+    locked: 0
+  - name: Tree 1
+    uniqueID: 636049379
+    locked: 0
   - name: Tree
     uniqueID: 4008011341
     locked: 0
