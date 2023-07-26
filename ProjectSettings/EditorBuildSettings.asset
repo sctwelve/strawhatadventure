@@ -12,9 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Game.unity
     guid: 9a3e65fae8849de428312a37154b61a1
   - enabled: 1
-    path: Assets/Scenes/CreditScene.unity
-    guid: a7f121cf73c3bd54bbc31c9e83a687e2
-  - enabled: 1
     path: Assets/Scenes/Stage Sand Cave.unity
     guid: 5391ab5b4e895bd4bbe1efafa290df58
+  - enabled: 1
+    path: Assets/Scenes/CreditScene.unity
+    guid: a7f121cf73c3bd54bbc31c9e83a687e2
   m_configObjects: {}

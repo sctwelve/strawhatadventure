@@ -5,12 +5,15 @@ using UnityEngine;
 public class EnemyProjectile : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] AudioClip HurtSFX;
+    [SerializeField] AudioClip HitSFX;
     [SerializeField] private float resetTime;
     private float lifetime;
 
     public void ActivateProjectile()
     {
         lifetime = 0;
+        AudioSource.PlayClipAtPoint(HitSFX, Camera.main.transform.position);
         gameObject.SetActive(true);
     }
 
@@ -33,6 +36,7 @@ public class EnemyProjectile : MonoBehaviour
             PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
             if (playerHealth != null)
             {
+                AudioSource.PlayClipAtPoint(HurtSFX, Camera.main.transform.position);
                 playerHealth.TakeDamage(5);
             }
 

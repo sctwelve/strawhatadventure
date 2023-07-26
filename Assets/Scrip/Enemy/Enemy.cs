@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     Rigidbody2D myRigidbody;
     [SerializeField] float moveSpeed = 1f;
     [SerializeField]  int maxHealth = 100;
+    [SerializeField] AudioClip EnemyDeadSFX;
     private bool canMove = true;
 
     int currentHealth;
@@ -83,11 +84,8 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
+        AudioSource.PlayClipAtPoint(EnemyDeadSFX, Camera.main.transform.position);
         Debug.Log("Enemy Died!");
         Destroy(gameObject);
-        //GetComponent<Collider2D>().enabled = false;
-        //this.enabled = false;
-
-       
     }
 }
