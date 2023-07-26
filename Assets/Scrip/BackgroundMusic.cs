@@ -45,6 +45,6 @@ public class BackgroundMusic : MonoBehaviour
     {
         // Implementasikan logika untuk menghentikan musik di sini.
         // Misalnya, jika Anda menggunakan AudioSource, caranya seperti ini:
-        // GetComponent<AudioSource>().Stop();
+        //GetComponent<AudioSource>().Stop();
     }
 }
