@@ -32,8 +32,8 @@ public class GameManager : MonoBehaviour
         {
             { 0, BGmusicForMainMenuSource },
             { 1, BGmusicForMainGameSource },
-            { 2, BGmusicForMainGameSource },
-            { 3, BGmusicForMainGameSource },
+            { 2, BGmusicForStageSandCaveSource },
+            { 3, BGmusicForCreditSceneSource },
 
         };
 

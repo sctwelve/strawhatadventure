@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class GateController : MonoBehaviour
 {
     public int requiredKeys = 10;
-    private bool doorOpened = false;
     
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -20,7 +19,6 @@ public class GateController : MonoBehaviour
             if (gameManager != null && gameManager.GetCurrentKey() >= requiredKeys)
             {
                 Debug.Log("Door Opened!");
-                doorOpened = true;
                 // Load the new scene "Scene2"
                 SceneManager.LoadScene(2);
             }
