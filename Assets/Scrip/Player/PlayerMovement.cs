@@ -289,7 +289,7 @@ public class PlayerMovement : MonoBehaviour
             else if(IsChosingDir && Input.GetKeyUp(KeyCode.Mouse1))
             {
                 
-                AudioSource.PlayClipAtPoint(bashSFX, Camera.main.transform.position);
+                AudioSource.PlayClipAtPoint(bashSFX, transform.position);
                 Time.timeScale = 1f;
                 BashAbleObj.transform.localScale = new Vector2(1, 1);
                 IsChosingDir = false;
