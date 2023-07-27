@@ -234,10 +234,10 @@ MonoBehaviour:
   speed: 2
   jumpPower: 14
   totalJumps: 2
-  radius: 6
+  radius: 3
   BashAbleObj: {fileID: 0}
   BashPower: 5
-  BashTime: 1
+  BashTime: 0.6
   Arrow: {fileID: 0}
   bashSFX: {fileID: 8300000, guid: 5ed4e6563f50c7b4096400b87d8288d7, type: 3}
   dashingPower: 24
