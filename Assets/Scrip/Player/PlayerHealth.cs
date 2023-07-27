@@ -56,7 +56,10 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         // Tambahkan perilaku saat player mati di sini, misalnya efek visual atau perubahan permainan
-        // Pada contoh ini, kita hanya menghancurkan GameObject player
-        Destroy(gameObject);
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        if (gameManager != null)
+        {
+                gameManager.PlayerDeath();
+        }
     }
 }
