@@ -436,7 +436,7 @@ MonoBehaviour:
   maxHealth: 100
   currentKey: 0
   BGmusicForMainMenuSource: {fileID: 8820438708027390891}
-  BGmusicForMainGameSource: {fileID: 8820438708027390891}
+  BGmusicForMainGameSource: {fileID: 8494713762691789423}
   BGmusicForStageSandCaveSource: {fileID: 6558801057084957499}
   BGmusicForCreditSceneSource: {fileID: 8667252086597362250}
 --- !u!1 &8826468314413052737

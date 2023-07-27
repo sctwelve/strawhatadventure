@@ -3384,7 +3384,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2401708029292034567, guid: 5e9ce34566cd729408b7032ff26e6332, type: 3}
       propertyPath: currentKey
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2401708029292034567, guid: 5e9ce34566cd729408b7032ff26e6332, type: 3}
       propertyPath: BGmusicForMainGameSource
