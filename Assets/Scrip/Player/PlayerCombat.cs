@@ -13,6 +13,8 @@ public class PlayerCombat : MonoBehaviour
     public float attackRate = 2f;
     float nextAttackTime = 0f;
     public int attackDamage = 40;
+    [SerializeField] AudioClip Hit1SFX;
+    [SerializeField] AudioClip HitS2FX;
 
     public float specialAttackCooldown = 5f;
     float nextSpecialAttackTime = 0f;
@@ -43,6 +45,7 @@ public class PlayerCombat : MonoBehaviour
     {
         // Play an attack animation
         animator.SetTrigger("Attack");
+        AudioSource.PlayClipAtPoint(Hit1SFX, Camera.main.transform.position);
 
         // Detect enemies within the range of attack
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackpoint.position, attackRange, enemyLayers);
@@ -58,6 +61,7 @@ public class PlayerCombat : MonoBehaviour
     {
         // Play a special attack animation
         animator.SetTrigger("SpecialAttack");
+        AudioSource.PlayClipAtPoint(HitS2FX, Camera.main.transform.position);
 
         // Detect enemies within the range of special attack
         Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackpoint.position, attackRange, enemyLayers);

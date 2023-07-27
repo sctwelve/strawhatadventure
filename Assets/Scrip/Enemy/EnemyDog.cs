@@ -17,6 +17,7 @@ public class EnemyDog : MonoBehaviour
 
     [SerializeField] private LayerMask playerLayer;
     private float cooldownTimer = Mathf.Infinity;
+    [SerializeField] AudioClip HitSFX;
 
      //References
     private Animator anim;
@@ -52,6 +53,7 @@ public class EnemyDog : MonoBehaviour
 
                 // Attack logic
                 cooldownTimer = 0;
+                AudioSource.PlayClipAtPoint(HitSFX, Camera.main.transform.position);
                 anim.SetTrigger("meeleAttack"); // Mengubah "meeleAttack" menjadi "attackTrigger"
             }
         }

@@ -59,17 +59,24 @@ public class GameManager : MonoBehaviour
 
     private void TogglePause()
     {
-        isPaused = !isPaused;
+        // Check if the death canvas is active
+        bool isDeathCanvasActive = deathCanvas.activeSelf;
 
-        if (isPaused)
+        // Check if the game can be paused (death canvas is not active)
+        if (!isDeathCanvasActive)
         {
-            Time.timeScale = 0f; // Pause the game by setting time scale to 0
-            pauseCanvas.SetActive(true); // Show the pause canvas
-        }
-        else
-        {
-            Time.timeScale = 1f; // Resume the game by setting time scale back to 1
-            pauseCanvas.SetActive(false); // Hide the pause canvas
+            isPaused = !isPaused;
+
+            if (isPaused)
+            {
+                Time.timeScale = 0f; // Pause the game by setting time scale to 0
+                pauseCanvas.SetActive(true); // Show the pause canvas
+            }
+            else
+            {
+                Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+                pauseCanvas.SetActive(false); // Hide the pause canvas
+            }
         }
     }
 

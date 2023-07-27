@@ -239,6 +239,7 @@ MonoBehaviour:
   BashPower: 5
   BashTime: 1
   Arrow: {fileID: 0}
+  bashSFX: {fileID: 8300000, guid: 5ed4e6563f50c7b4096400b87d8288d7, type: 3}
   dashingPower: 24
   dashingTime: 0.1
   dashingCooldown: 1
@@ -262,6 +263,8 @@ MonoBehaviour:
   attackRange: 0.74
   attackRate: 2
   attackDamage: 40
+  Hit1SFX: {fileID: 8300000, guid: e444ef9693f897e4db0b86ce987e632c, type: 3}
+  HitS2FX: {fileID: 8300000, guid: 49880043c1f461041a10a9a49bb932d6, type: 3}
   specialAttackCooldown: 5
   specialAttackDamage: 100
 --- !u!114 &2669545987094722268

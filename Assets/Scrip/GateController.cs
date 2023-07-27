@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GateController : MonoBehaviour
 {
     public int requiredKeys = 10;
+    [SerializeField] AudioClip DoorSFX;
     
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -20,6 +21,7 @@ public class GateController : MonoBehaviour
             {
                 Debug.Log("Door Opened!");
                 gameManager.DecreaseKeys();
+                AudioSource.PlayClipAtPoint(DoorSFX, Camera.main.transform.position);
                 // Load the new scene "Scene2"
                 SceneManager.LoadScene(2);
             }
