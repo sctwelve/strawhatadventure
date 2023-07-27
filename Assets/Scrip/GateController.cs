@@ -19,6 +19,7 @@ public class GateController : MonoBehaviour
             if (gameManager != null && gameManager.GetCurrentKey() >= requiredKeys)
             {
                 Debug.Log("Door Opened!");
+                gameManager.DecreaseKeys();
                 // Load the new scene "Scene2"
                 SceneManager.LoadScene(2);
             }

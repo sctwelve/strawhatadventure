@@ -404,6 +404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1
   maxHealth: 100
+  EnemyDeadSFX: {fileID: 8300000, guid: 4903879275646c247affb6b1f126d783, type: 3}
   PointA1: {fileID: 0}
   PointA2: {fileID: 0}
 --- !u!61 &3565817654247696298

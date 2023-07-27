@@ -48,6 +48,11 @@ public class GameManager : MonoBehaviour
       return currentKey;
     }
 
+    public void DecreaseKeys()
+    {
+        currentKey -= 10;
+    }
+    
     private void PlayBGMusic(int sceneIndex)
     {
         if (sceneMusicMap.ContainsKey(sceneIndex))
