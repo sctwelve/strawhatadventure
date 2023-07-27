@@ -9,6 +9,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int currentHP;
     [SerializeField] public int maxHealth;
     [SerializeField] public int currentKey;
+    public GameObject pauseCanvas;
+    public GameObject deathCanvas;
+    private bool isPaused = false;
+
     private static GameManager instance;
     
     public AudioSource BGmusicForMainMenuSource; // AudioSource untuk Scene 0
@@ -39,6 +43,34 @@ public class GameManager : MonoBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         PlayBGMusic(SceneManager.GetActiveScene().buildIndex);
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (SceneManager.GetActiveScene().buildIndex != 0)
+            {
+                TogglePause();
+            }
+        }
+    }
+
+    private void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0f; // Pause the game by setting time scale to 0
+            pauseCanvas.SetActive(true); // Show the pause canvas
+        }
+        else
+        {
+            Time.timeScale = 1f; // Resume the game by setting time scale back to 1
+            pauseCanvas.SetActive(false); // Hide the pause canvas
+        }
     }
 
     public void AddKeys(int keyPicked){
@@ -104,8 +136,21 @@ public class GameManager : MonoBehaviour
     }
 
     public void PlayerDeath(){
-      SceneManager.LoadScene(0);
-      Destroy(gameObject);      
+      Time.timeScale = 0f; // Pause the game by setting time scale to 0
+      deathCanvas.SetActive(true); // Show the pause canvas
+    //   SceneManager.LoadScene(0);
+    //   Destroy(gameObject);      
+    }
+
+    public void resetGame()
+    {
+        SceneManager.LoadScene(1);
+        Destroy(gameObject);
+    }    
+    public void backMainMenu()
+    {
+       SceneManager.LoadScene(0);
+       Destroy(gameObject);
     }
 
     public int GetCurrentHealth(){
@@ -116,7 +161,11 @@ public class GameManager : MonoBehaviour
       return maxHealth;
     }
 
-    public void GetKeys(){
-
+    public int GetKeys(){
+        return currentKey;
+    }
+    public static GameManager GetInstance()
+    {
+        return instance;
     }
 }

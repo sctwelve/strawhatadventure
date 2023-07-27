@@ -66,7 +66,6 @@ public class EnemyDog : MonoBehaviour
     // Fungsi yang akan dipanggil dari animasi untuk memberikan damage ke pemain
     public void DealDamageToPlayer()
     {
-        Debug.Log("serang");
         // Temukan pemain dengan tag "Player"
         Collider2D playerCollider = Physics2D.OverlapBox(
             boxCollider2D.bounds.center,
